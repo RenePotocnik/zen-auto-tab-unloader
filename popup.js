@@ -5,6 +5,7 @@ function saveOptions() {
   const config = {
     enabled: document.getElementById('enabled').checked,
     time: parseInt(document.getElementById('timeCheck').value),
+    checkInterval: parseInt(document.getElementById('checkInterval').value) || 5,
     unloadPinned: document.getElementById('unloadPinned').checked,
     unloadEssential: document.getElementById('unloadEssential').checked,
     unloadAudible: document.getElementById('unloadAudible').checked,
@@ -25,6 +26,7 @@ function restoreOptions() {
     const settings = res.unloaderSettings || { 
       enabled: true, 
       time: 30, 
+      checkInterval: 5,
       unloadPinned: false, 
       unloadEssential: false, 
       unloadAudible: false,
@@ -33,6 +35,7 @@ function restoreOptions() {
 
     document.getElementById('enabled').checked = settings.enabled;
     document.getElementById('timeCheck').value = settings.time;
+    document.getElementById('checkInterval').value = settings.checkInterval || 5;
     document.getElementById('unloadPinned').checked = settings.unloadPinned;
     document.getElementById('unloadEssential').checked = settings.unloadEssential;
     document.getElementById('unloadAudible').checked = settings.unloadAudible;

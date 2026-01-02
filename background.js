@@ -1,6 +1,7 @@
 let config = {
   enabled: true,
   time: 30,
+  checkInterval: 5,
   unloadPinned: false,
   unloadEssential: false,
   unloadAudible: false,
@@ -16,7 +17,7 @@ browser.runtime.onMessage.addListener((message) => {
   if (message.command === "updateSettings") {
     browser.storage.local.get("unloaderSettings").then((res) => {
       if (res.unloaderSettings) config = res.unloaderSettings;
-      setupAlarm();
+      setupAlarm(); 
       checkAndUnloadTabs(); // Force check immediately on save
     });
   }
@@ -32,7 +33,11 @@ function setupAlarm() {
   browser.alarms.clearAll();
 
   if (config.enabled) {
-    browser.alarms.create("checkTabs", { periodInMinutes: 1.0 });
+    const interval = Math.max(1, config.checkInterval || 5);
+    
+    // Create the alarm
+    browser.alarms.create("checkTabs", { periodInMinutes: interval });
+    console.log(`[Zen Unloader] Alarm set to run every ${interval} minutes.`);
   }
 }
 
@@ -62,7 +67,7 @@ async function checkAndUnloadTabs() {
       }
     }
 
-    // Different workspace
+    // Different workspace logic
     if (!tab.pinned && tab.hidden) {
        if (!config.unloadHidden) continue;
     }
