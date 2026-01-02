@@ -73,11 +73,10 @@ async function checkAndUnloadTabs() {
     }
 
     if (tab.lastAccessed < thresholdTime) {
-      console.log(`[Zen Unloader] Discarding: ${tab.title}`);
       try {
           await browser.tabs.discard(tab.id);
       } catch (err) {
-          console.error(`Skipped active tab: ${tab.title}`);
+          console.error(err);
       }
     }
   }
